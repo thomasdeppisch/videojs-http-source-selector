@@ -1,7 +1,7 @@
 /**
  * videojs-http-source-selector
- * @version 1.1.6
- * @copyright 2020 [object Object]
+ * @version 1.1.7
+ * @copyright 2020 Justin Fujita <Justin@pivotshare.com>
  * @license MIT
  */
 (function (global, factory) {
@@ -12,7 +12,7 @@
 
   videojs = videojs && Object.prototype.hasOwnProperty.call(videojs, 'default') ? videojs['default'] : videojs;
 
-  var version = "1.1.6";
+  var version = "1.1.7";
 
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype);

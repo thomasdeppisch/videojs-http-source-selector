@@ -4,7 +4,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var videojs = _interopDefault(require('video.js'));
 
-var version = "1.1.6";
+var version = "1.1.7";
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
