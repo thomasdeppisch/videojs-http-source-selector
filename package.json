@@ -1,74 +1,43 @@
 {
-  "name": "videojs-http-source-selector",
-  "version": "1.1.6",
-  "description": "VideoJS plugin that leverages videojs-contrib-quality-levels plugin to offer manual user-selectable level selection options for adaptive http streams.",
-  "main": "dist/videojs-http-source-selector.cjs.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jfujita/videojs-http-source-selector.git"
+  "_from": "videojs-http-source-selector",
+  "_id": "videojs-http-source-selector@1.1.6",
+  "_inBundle": false,
+  "_integrity": "sha512-6b5MmKTT2cVnrjtdNj4z1VO91udbXkZkTYA6LlD8WN2aHlG2rqFTmtMab4NK4nlkkkbRnm3c2q2IddL3jffLmg==",
+  "_location": "/videojs-http-source-selector",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "videojs-http-source-selector",
+    "name": "videojs-http-source-selector",
+    "escapedName": "videojs-http-source-selector",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
-  "module": "dist/videojs-http-source-selector.es.js",
-  "generator-videojs-plugin": {
-    "version": "5.2.1"
-  },
-  "scripts": {
-    "prebuild": "npm run clean",
-    "build": "npm-run-all -p build:*",
-    "build:css": "npm-run-all build:css:sass build:css:bannerize",
-    "build:css:bannerize": "bannerize dist/videojs-http-source-selector.css --banner=scripts/banner.ejs",
-    "build:css:sass": "node-sass src/plugin.scss dist/videojs-http-source-selector.css --output-style=compressed --linefeed=lf",
-    "build:js": "npm-run-all build:js:rollup-modules build:js:rollup-umd build:js:bannerize build:js:uglify",
-    "build:js:bannerize": "bannerize dist/videojs-http-source-selector.js --banner=scripts/banner.ejs",
-    "build:js:rollup-modules": "rollup -c scripts/modules.rollup.config.js",
-    "build:js:rollup-umd": "rollup -c scripts/umd.rollup.config.js",
-    "build:js:uglify": "uglifyjs dist/videojs-http-source-selector.js --comments --mangle --compress  -o dist/videojs-http-source-selector.min.js",
-    "build:test": "rollup -c scripts/test.rollup.config.js",
-    "clean": "rimraf dist test/dist",
-    "postclean": "mkdirp dist test/dist",
-    "docs": "npm-run-all docs:*",
-    "docs:api": "jsdoc src -r -c jsdoc.json -d docs/api",
-    "docs:toc": "doctoc README.md",
-    "lint": "vjsstandard",
-    "start": "npm-run-all -p start:server watch",
-    "start:server": "node scripts/server.js",
-    "pretest": "npm-run-all lint build",
-    "test": "karma start test/karma.conf.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:css": "npm-run-all build:css:sass watch:css:sass",
-    "watch:css:sass": "node-sass src/plugin.scss dist/videojs-http-source-selector.css --output-style=compressed --linefeed=lf --watch src/**/*.scss",
-    "watch:js-modules": "rollup -c scripts/modules.rollup.config.js -w",
-    "watch:js-umd": "rollup -c scripts/umd.rollup.config.js -w",
-    "watch:test": "rollup -c scripts/test.rollup.config.js -w",
-    "prepublish": "not-in-install && npm run build || in-install"
-  },
-  "keywords": [
-    "videojs",
-    "videojs-plugin"
+  "_requiredBy": [
+    "#USER",
+    "/"
   ],
-  "author": "Justin Fujita <Justin@pivotshare.com>",
-  "license": "MIT",
-  "vjsstandard": {
-    "ignore": [
-      "dist",
-      "docs",
-      "test/dist",
-      "test/karma.conf.js"
-    ]
+  "_resolved": "https://registry.npmjs.org/videojs-http-source-selector/-/videojs-http-source-selector-1.1.6.tgz",
+  "_shasum": "073aadbea0106ba6c98d6b611094dbf8554ffa1f",
+  "_spec": "videojs-http-source-selector",
+  "_where": "/Users/tommi/Desktop/hoastIEM/hoast-player",
+  "author": {
+    "name": "Justin Fujita",
+    "email": "Justin@pivotshare.com"
   },
-  "files": [
-    "CONTRIBUTING.md",
-    "dist/",
-    "docs/",
-    "index.html",
-    "scripts/",
-    "src/",
-    "test/"
-  ],
+  "bugs": {
+    "url": "https://github.com/jfujita/videojs-http-source-selector/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "global": "^4.3.2",
     "video.js": "^7.0.0",
     "videojs-contrib-quality-levels": "^2.0.4"
   },
+  "deprecated": false,
+  "description": "VideoJS plugin that leverages videojs-contrib-quality-levels plugin to offer manual user-selectable level selection options for adaptive http streams.",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-external-helpers": "^7.0.0",
@@ -105,5 +74,69 @@
     "sinon": "^7.3.1",
     "uglify-js": "^3.3.5",
     "videojs-standard": "^8.0.2"
+  },
+  "files": [
+    "CONTRIBUTING.md",
+    "dist/",
+    "docs/",
+    "index.html",
+    "scripts/",
+    "src/",
+    "test/"
+  ],
+  "generator-videojs-plugin": {
+    "version": "5.2.1"
+  },
+  "homepage": "https://github.com/jfujita/videojs-http-source-selector#readme",
+  "keywords": [
+    "videojs",
+    "videojs-plugin"
+  ],
+  "license": "MIT",
+  "main": "dist/videojs-http-source-selector.cjs.js",
+  "module": "dist/videojs-http-source-selector.es.js",
+  "name": "videojs-http-source-selector",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfujita/videojs-http-source-selector.git"
+  },
+  "scripts": {
+    "build": "npm-run-all -p build:*",
+    "build:css": "npm-run-all build:css:sass build:css:bannerize",
+    "build:css:bannerize": "bannerize dist/videojs-http-source-selector.css --banner=scripts/banner.ejs",
+    "build:css:sass": "node-sass src/plugin.scss dist/videojs-http-source-selector.css --output-style=compressed --linefeed=lf",
+    "build:js": "npm-run-all build:js:rollup-modules build:js:rollup-umd build:js:bannerize build:js:uglify",
+    "build:js:bannerize": "bannerize dist/videojs-http-source-selector.js --banner=scripts/banner.ejs",
+    "build:js:rollup-modules": "rollup -c scripts/modules.rollup.config.js",
+    "build:js:rollup-umd": "rollup -c scripts/umd.rollup.config.js",
+    "build:js:uglify": "uglifyjs dist/videojs-http-source-selector.js --comments --mangle --compress  -o dist/videojs-http-source-selector.min.js",
+    "build:test": "rollup -c scripts/test.rollup.config.js",
+    "clean": "rimraf dist test/dist",
+    "docs": "npm-run-all docs:*",
+    "docs:api": "jsdoc src -r -c jsdoc.json -d docs/api",
+    "docs:toc": "doctoc README.md",
+    "lint": "vjsstandard",
+    "postclean": "mkdirp dist test/dist",
+    "prebuild": "npm run clean",
+    "prepublish": "not-in-install && npm run build || in-install",
+    "pretest": "npm-run-all lint build",
+    "start": "npm-run-all -p start:server watch",
+    "start:server": "node scripts/server.js",
+    "test": "karma start test/karma.conf.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:css": "npm-run-all build:css:sass watch:css:sass",
+    "watch:css:sass": "node-sass src/plugin.scss dist/videojs-http-source-selector.css --output-style=compressed --linefeed=lf --watch src/**/*.scss",
+    "watch:js-modules": "rollup -c scripts/modules.rollup.config.js -w",
+    "watch:js-umd": "rollup -c scripts/umd.rollup.config.js -w",
+    "watch:test": "rollup -c scripts/test.rollup.config.js -w"
+  },
+  "version": "1.1.6",
+  "vjsstandard": {
+    "ignore": [
+      "dist",
+      "docs",
+      "test/dist",
+      "test/karma.conf.js"
+    ]
   }
 }

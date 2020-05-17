@@ -1,12 +1,18 @@
+/**
+ * videojs-http-source-selector
+ * @version 1.1.6
+ * @copyright 2020 [object Object]
+ * @license MIT
+ */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js')) :
   typeof define === 'function' && define.amd ? define(['video.js'], factory) :
   (global = global || self, global['videojs-http-source-selector'] = factory(global.videojs));
-}(this, function (videojs) { 'use strict';
+}(this, (function (videojs) { 'use strict';
 
-  videojs = videojs && videojs.hasOwnProperty('default') ? videojs['default'] : videojs;
+  videojs = videojs && Object.prototype.hasOwnProperty.call(videojs, 'default') ? videojs['default'] : videojs;
 
-  var version = "1.1.5";
+  var version = "1.1.6";
 
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype);
@@ -25,22 +31,25 @@
   var MenuItem = videojs.getComponent('MenuItem');
   var Component = videojs.getComponent('Component');
 
-  var SourceMenuItem =
-  /*#__PURE__*/
-  function (_MenuItem) {
+  var SourceMenuItem = /*#__PURE__*/function (_MenuItem) {
     _inheritsLoose(SourceMenuItem, _MenuItem);
 
     function SourceMenuItem(player, options) {
+      var _this;
+
       options.selectable = true;
       options.multiSelectable = false;
-      return _MenuItem.call(this, player, options) || this;
+      _this = _MenuItem.call(this, player, options) || this;
+
+      _this.update();
+
+      return _this;
     }
 
     var _proto = SourceMenuItem.prototype;
 
     _proto.handleClick = function handleClick() {
       var selected = this.options_;
-      console.log("Changing quality to:", selected.label);
 
       _MenuItem.prototype.handleClick.call(this);
 
@@ -56,11 +65,24 @@
           levels[i].enabled = false;
         }
       }
+
+      levels.trigger({
+        type: 'change',
+        selectedIndex: selected.index
+      });
     };
 
     _proto.update = function update() {
-      var selectedIndex = this.player().qualityLevels().selectedIndex;
-      this.selected(this.options_.index == selectedIndex);
+      var levels = this.player().qualityLevels();
+      var numEnabledLevels = 0;
+
+      for (var i = 0; i < levels.length; i++) {
+        if (levels[i].enabled) numEnabledLevels = numEnabledLevels + 1;
+      }
+
+      if (numEnabledLevels === 1) // not auto option
+        this.selected(this.options_.index === levels.selectedIndex);else // auto: more than one quality is enabled
+        this.selected(this.options_.index === levels.length);
     };
 
     return SourceMenuItem;
@@ -70,9 +92,7 @@
 
   var MenuButton = videojs.getComponent('MenuButton');
 
-  var SourceMenuButton =
-  /*#__PURE__*/
-  function (_MenuButton) {
+  var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
     _inheritsLoose(SourceMenuButton, _MenuButton);
 
     function SourceMenuButton(player, options) {
@@ -86,13 +106,13 @@
 
 
       if (options && options["default"]) {
-        if (options["default"] == 'low') {
+        if (options["default"] === 'low') {
           for (var i = 0; i < qualityLevels.length; i++) {
             qualityLevels[i].enabled = i == 0;
           }
-        } else if (options["default"] = 'high') {
-          for (var i = 0; i < qualityLevels.length; i++) {
-            qualityLevels[i].enabled = i == qualityLevels.length - 1;
+        } else if (options["default"] === 'high') {
+          for (var _i = 0; _i < qualityLevels.length; _i++) {
+            qualityLevels[_i].enabled = _i == qualityLevels.length - 1;
           }
         }
       } // Bind update to qualityLevels changes
@@ -112,15 +132,11 @@
     };
 
     _proto.buildCSSClass = function buildCSSClass() {
-      return MenuButton.prototype.buildCSSClass.call(this) + ' vjs-icon-cog';
-    };
-
-    _proto.update = function update() {
-      return MenuButton.prototype.update.call(this);
+      return MenuButton.prototype.buildCSSClass.call(this);
     };
 
     _proto.createItems = function createItems() {
-      var menuItems = [];
+      this.menuItems = [];
       var levels = this.player().qualityLevels();
       var labels = [];
 
@@ -145,26 +161,27 @@
         }
 
         labels.push(label);
-        menuItems.push(new SourceMenuItem(this.player_, {
+        this.menuItems.push(new SourceMenuItem(this.player_, {
           label: label,
           index: index,
           selected: selected,
           sortVal: sortVal
         }));
       } // If there are multiple quality levels, offer an 'auto' option
+      // initialize 'auto' as selected if no other option is currently selected
 
 
       if (levels.length > 1) {
-        menuItems.push(new SourceMenuItem(this.player_, {
+        this.menuItems.push(new SourceMenuItem(this.player_, {
           label: 'Auto',
           index: levels.length,
-          selected: false,
+          selected: levels.selectedIndex === -1,
           sortVal: 99999
         }));
       } // Sort menu items by their label name with Auto always first
 
 
-      menuItems.sort(function (a, b) {
+      this.menuItems.sort(function (a, b) {
         if (a.options_.sortVal < b.options_.sortVal) {
           return 1;
         } else if (a.options_.sortVal > b.options_.sortVal) {
@@ -173,7 +190,7 @@
           return 0;
         }
       });
-      return menuItems;
+      return this.menuItems;
     };
 
     return SourceMenuButton;
@@ -199,31 +216,21 @@
   */
 
   var onPlayerReady = function onPlayerReady(player, options) {
-    player.addClass('vjs-http-source-selector');
-    console.log("videojs-http-source-selector initialized!");
-    console.log("player.techName_:" + player.techName_); //This plugin only supports level selection for HLS playback
+    player.addClass('vjs-http-source-selector'); //This plugin only supports level selection for HLS playback
 
-    if (player.techName_ != 'Html5') {
-      return false;
-    }
+    if (player.techName_ !== 'Html5') return false;
     /**
     *
     * We have to wait for the manifest to load before we can scan renditions for resolutions/bitrates to populate selections
     *
     **/
 
-
     player.on(['loadedmetadata'], function (e) {
-      var qualityLevels = player.qualityLevels();
-      videojs.log('loadmetadata event'); // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
-
-      if (player.videojs_http_source_selector_initialized == 'undefined' || player.videojs_http_source_selector_initialized == true) {
-        console.log("player.videojs_http_source_selector_initialized == true");
-      } else {
-        console.log("player.videojs_http_source_selector_initialized == false");
+      //hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
+      if (player.videojs_http_source_selector_initialized !== 'undefined' && player.videojs_http_source_selector_initialized !== true) {
         player.videojs_http_source_selector_initialized = true;
-        var controlBar = player.controlBar,
-            fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
+        var controlBar = player.controlBar;
+        var fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
         controlBar.el().insertBefore(controlBar.addChild('SourceMenuButton').el(), fullscreenToggle);
       }
     });
@@ -259,4 +266,4 @@
 
   return httpSourceSelector;
 
-}));
+})));

@@ -28,35 +28,22 @@ const registerPlugin = videojs.registerPlugin || videojs.plugin;
 const onPlayerReady = (player, options) =>
 {
   player.addClass('vjs-http-source-selector');
-  console.log("videojs-http-source-selector initialized!");
 
-  console.log("player.techName_:"+player.techName_);
   //This plugin only supports level selection for HLS playback
-  if(player.techName_ != 'Html5')
-  {
+  if(player.techName_ !== 'Html5')
     return false;
-  }
 
   /**
   *
   * We have to wait for the manifest to load before we can scan renditions for resolutions/bitrates to populate selections
   *
   **/
-  player.on(['loadedmetadata'], function(e)
-  {
-    var qualityLevels = player.qualityLevels();
-    videojs.log('loadmetadata event');
-    // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
-    if(player.videojs_http_source_selector_initialized == 'undefined' || player.videojs_http_source_selector_initialized == true)
-    {
-      console.log("player.videojs_http_source_selector_initialized == true");
-    }
-    else
-    {
-      console.log("player.videojs_http_source_selector_initialized == false")
+ player.on(['loadedmetadata'], (e) => {
+    //hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
+    if(player.videojs_http_source_selector_initialized !== 'undefined' && player.videojs_http_source_selector_initialized !== true) {
       player.videojs_http_source_selector_initialized = true;
-      var controlBar = player.controlBar, 
-          fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
+      const { controlBar } = player;
+      const fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
       controlBar.el().insertBefore(controlBar.addChild('SourceMenuButton').el(), fullscreenToggle);
     }
   });
