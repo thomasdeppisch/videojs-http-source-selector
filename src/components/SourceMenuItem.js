@@ -28,6 +28,7 @@ class SourceMenuItem extends MenuItem
       }
     }
 
+    levels.selectedIndex_ = selected.index;
     levels.trigger({ type: 'change', selectedIndex: selected.index });
   }
 
@@ -44,7 +45,6 @@ class SourceMenuItem extends MenuItem
         this.selected(this.options_.index === levels.selectedIndex);
     else // auto: more than one quality is enabled
         this.selected(this.options_.index === levels.length);
-        
   }
 }
 
