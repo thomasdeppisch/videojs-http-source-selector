@@ -66,6 +66,7 @@
         }
       }
 
+      levels.selectedIndex_ = selected.index;
       levels.trigger({
         type: 'change',
         selectedIndex: selected.index
